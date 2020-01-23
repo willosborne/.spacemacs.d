@@ -19,3 +19,52 @@ Move cursor to new line."
     (show-paren-mode t)
     (prettify-symbols-mode)
     (turn-on-smartparens-strict-mode)))
+
+(defun fancy-newline ()
+  "For use in C-style languages. {|} RET becomes:
+  ... {
+    |
+  }
+  with mode-appropriate indent."
+  (interactive)
+  (if (and (equal (char-before) 123) ; {
+           (equal (char-after) 125)) ; }
+      (progn (newline-and-indent)
+             (split-line)
+             (indent-for-tab-command))
+    (newline-and-indent)))
+
+(defun line-empty-p ()
+  (string-empty-p (s-trim (thing-at-point 'line t))))
+
+(defun line-so-far ()
+  (substring (thing-at-point 'line t) 0 (current-column)))
+
+(defun beginning-of-line-text-p ()
+  (string-empty-p (s-trim (line-so-far))))
+
+(defun beginning-line-or-indentation ()
+  "If line is empty, move to the beginning of the line. Otherwise, move to the first character of the line"
+  (interactive)             ; special form, makes this command callable via M-x or a keybind
+  (if (line-empty-p)        ; if line is empty
+      (beginning-of-line)   ; jump to beginning
+    (back-to-indentation))) ; else, jump to first character
+
+(defun djoyner/evil-shift-left-visual ()
+  (interactive)
+  (evil-shift-left (region-beginning) (region-end))
+  (evil-normal-state)
+  (evil-visual-restore))
+
+(defun djoyner/evil-shift-right-visual ()
+  (interactive)
+  (evil-shift-right (region-beginning) (region-end))
+  (evil-normal-state)
+  (evil-visual-restore))
+
+(defun smart-backspace ()
+  (interactive)
+  (if (beginning-of-line-text-p)
+      (progn (join-line)
+             (indent-according-to-mode))
+      (delete-backward-char 1)))
