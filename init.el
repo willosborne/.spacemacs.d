@@ -324,8 +324,7 @@ you should place your code here."
   (setq org-agenda-files (list "~/org/notes.org"))
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "h" 'org-shiftleft)
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "l" 'org-shiftright)
-  ;; (general-define-key
-  ;;  :states (normal insert))
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

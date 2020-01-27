@@ -68,3 +68,16 @@ Move cursor to new line."
       (progn (join-line)
              (indent-according-to-mode))
       (delete-backward-char 1)))
+
+(defun haskell-evil-open-above ()
+  (interactive)
+  (evil-digit-argument-or-evil-beginning-of-line)
+  (haskell-indentation-newline-and-indent)
+  (evil-previous-line)
+  (haskell-indentation-indent-line)
+  (evil-append-line nil))
+
+(defun haskell-evil-open-below ()
+  (interactive)
+  (evil-append-line nil)
+  (haskell-indentation-newline-and-indent))

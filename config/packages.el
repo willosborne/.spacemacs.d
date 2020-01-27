@@ -30,7 +30,7 @@
 ;;; Code:
 
 (defconst config-packages
-  '(general smartparens battle-haxe writeroom-mode)
+  '(general smartparens battle-haxe writeroom-mode haskell-mode)
   "The list of Lisp packages required by the config layer.
 
 Each entry is either:
@@ -143,4 +143,9 @@ Each entry is either:
     (battle-haxe-yasnippet-completion-expansion t "Keep this if you want yasnippet to expand completions when it's available.")
     (battle-haxe-immediate-completion nil "Toggle this if you want to immediately trigger completion when typing '.' and other relevant prefixes.")))
 
+(defun config/init-haskell-mode ()
+  (general-define-key
+   :keymaps 'haskell-mode-map
+   :states 'insert
+   "<backspace>" 'delete-backward-char))
 ;;; packages.el ends here
