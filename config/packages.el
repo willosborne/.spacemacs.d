@@ -92,8 +92,16 @@ Each entry is either:
   (general-define-key
    :states 'insert
    "RET" 'fancy-newline
+   "M-<backspace>" 'smart-backspace
+   )
+
+  (general-define-key
+   :state 'insert
+   :keymaps '(c-mode-base-map
+              lisp-mode-shared-map)
    "<backspace>" 'smart-backspace
-   ))
+   )
+  )
 
 (defun config/init-smartparens ()
   (use-package smartparens
