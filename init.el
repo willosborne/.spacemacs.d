@@ -332,6 +332,11 @@ you should place your code here."
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "h" 'org-shiftleft)
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "l" 'org-shiftright)
 
+  (general-define-key
+   :state 'insert
+   :keymaps '(slime-repl-mode-map)
+   "<backspace>" 'evil-delete-backward-char-and-join
+   )
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

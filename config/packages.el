@@ -99,8 +99,9 @@ Each entry is either:
    :state 'insert
    :keymaps '(c-mode-base-map
               lisp-mode-shared-map)
-   "<backspace>" 'smart-backspace
+   ;; "<backspace>" 'smart-backspace
    )
+
   )
 
 (defun config/init-smartparens ()
@@ -115,12 +116,14 @@ Each entry is either:
      "M-s" 'sp-splice-sexp
      "M-(" 'sp-wrap-round
      "M-{" 'sp-wrap-curly
-     "M-[" 'sp-wrap-square)
+     "M-[" 'sp-wrap-square
+     "M-S" 'sp-split-sexp)
     (smartparens-global-mode)
     (sp-with-modes sp-lisp-modes
       ;; disable ', it's the quote character!
-      (sp-local-pair "'" nil :actions nil))
-    ))
+      (sp-local-pair "'" nil :actions nil)
+      (sp-local-pair "`" nil :actions nil)))
+    )
 
 (defun config/init-writeroom-mode ()
   (use-package writeroom-mode
@@ -156,4 +159,9 @@ Each entry is either:
    :keymaps 'haskell-mode-map
    :states 'insert
    "<backspace>" 'delete-backward-char))
+
+;; (defun config/init-smart-backspace-mode ()
+;;   (use-package smart-backspace-mode
+;;     :config
+;;     (smart-backspace-mode)))
 ;;; packages.el ends here

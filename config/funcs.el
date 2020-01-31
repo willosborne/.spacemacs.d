@@ -62,12 +62,6 @@ Move cursor to new line."
   (evil-normal-state)
   (evil-visual-restore))
 
-(defun smart-backspace ()
-  (interactive)
-  (if (beginning-of-line-text-p)
-      (progn (join-line)
-             (indent-according-to-mode))
-      (delete-backward-char 1)))
 
 (defun haskell-evil-open-above ()
   (interactive)
@@ -81,3 +75,25 @@ Move cursor to new line."
   (interactive)
   (evil-append-line nil)
   (haskell-indentation-newline-and-indent))
+
+
+(defun smart-backspace ()
+  (interactive)
+  (if (beginning-of-line-text-p)
+      (progn
+        (join-line)
+        (indent-according-to-mode))
+      (let ((smart-backspace-mode nil))
+        (command-execute (or
+                          (key-binding (this-single-command-keys))
+                          'evil-delete-backward-char-and-join)))))
+
+(defvar smart-backspace-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "<backspace>") 'smart-backspace)
+    map))
+
+(define-minor-mode smart-backspace-mode
+  "Smarten yourself up!"
+  :global t)
+
