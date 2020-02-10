@@ -1,3 +1,5 @@
+(require 'cl-lib)
+
 (defvar electrify-return-match
   "[\]}\)\"]"
   "If this regex matches text after cursor, do an \"electric\" return.")
@@ -37,6 +39,9 @@ Move cursor to new line."
 (defun line-empty-p ()
   (string-empty-p (s-trim (thing-at-point 'line t))))
 
+;; Note to self: this crashes when called from a SLIME command prompt,
+;; as the (current-column) includes the prompt text but (thing-at-point ...)
+;; doesn't!
 (defun line-so-far ()
   (substring (thing-at-point 'line t) 0 (current-column)))
 
@@ -79,14 +84,20 @@ Move cursor to new line."
 
 (defun smart-backspace ()
   (interactive)
-  (if (beginning-of-line-text-p)
-      (progn
-        (join-line)
-        (indent-according-to-mode))
-      (let ((smart-backspace-mode nil))
-        (command-execute (or
-                          (key-binding (this-single-command-keys))
-                          'evil-delete-backward-char-and-join)))))
+  (cl-flet ((standard-backspace ()
+              (let ((smart-backspace-mode nil))
+                (command-execute (or
+                                  (key-binding (this-single-command-keys))
+                                  'delete-backward-char))))
+            (smart-bksp ()
+              (join-line)
+              (indent-according-to-mode)))
+
+    (if (window-minibuffer-p)
+        (standard-backspace)
+        (if (beginning-of-line-text-p)
+            (smart-bksp)
+            (standard-backspace)))))
 
 (defvar smart-backspace-mode-map
   (let ((map (make-sparse-keymap)))

@@ -13,5 +13,6 @@
 (setq scheme-program-name "guile")
 
 (add-hook 'lisp-mode-hook #'smart-backspace-mode)
+
 (add-hook 'c-mode-common-hook #'smart-backspace-mode)
 
