@@ -76,12 +76,12 @@ Each entry is either:
    "S-<right>" 'evil-window-right
    "S-<up>" 'evil-window-up
    "S-<down>" 'evil-window-down
-   )
+   "C-x C-k" 'ido-kill-buffer)
   (general-define-key
    :states 'visual
    ">" 'djoyner/evil-shift-right-visual
    "<" 'djoyner/evil-shift-left-visual)
-  ;; "q" (lambda () 
+  ;; "q" (lambda ()
   ;;       (message "Sorry dawg, Vim macros are off in normal mode for my own sanity :^\)")))
 
   (general-define-key
