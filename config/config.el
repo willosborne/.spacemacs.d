@@ -13,6 +13,11 @@
 (setq scheme-program-name "guile")
 
 (add-hook 'lisp-mode-hook #'smart-backspace-mode)
-
 (add-hook 'c-mode-common-hook #'smart-backspace-mode)
+
+;; ;; kill scratch
+;; (defun remove-scratch-buffer ()
+;;   (if (get-buffer "*scratch*")
+;;       (kill-buffer "*scratch*")))
+;; (add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
 

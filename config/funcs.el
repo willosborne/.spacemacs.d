@@ -88,7 +88,7 @@ Move cursor to new line."
               (let ((smart-backspace-mode nil))
                 (command-execute (or
                                   (key-binding (this-single-command-keys))
-                                  'delete-backward-char))))
+                                  'sp-backward-delete-char))))
             (smart-bksp ()
               (join-line)
               (indent-according-to-mode)))
@@ -105,6 +105,18 @@ Move cursor to new line."
     map))
 
 (define-minor-mode smart-backspace-mode
-  "Smarten yourself up!"
-  :global t)
+  "Smarten yourself up!")
+
+(defvar simple-todo-regex "\\(TODO\\|FIXME\\|NOTE\\)")
+
+
+(defun start-termite-terminal-current-dir ()
+  (interactive)
+  (message (concat "Starting terminal in " default-directory "..."))
+  (start-process "ext-terminal"
+                 nil
+                 "setsid"
+                 "termite"
+                 "-d" default-directory
+                 "-e" "zsh"))
 

@@ -30,9 +30,11 @@ values."
    dotspacemacs-configuration-layer-path '("~/.spacemacs.d/")
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(sql
+   '(javascript
+     sql
      racket
-     clojure
+     (clojure :variables
+              clojure-enable-clj-refactor t)
      shell-scripts
      python
      yaml
@@ -65,7 +67,10 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(general ssh-agency)
+   dotspacemacs-additional-packages '(general
+                                      ssh-agency
+                                      evil-easymotion
+                                      dimmer)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -331,6 +336,13 @@ you should place your code here."
 
   (add-hook 'cider-repl-mode-hook 'evil-emacs-state)
 
+  (add-hook 'clojure-mode-hook 'smartparens-strict-mode)
+  (add-hook 'clojure-mode-hook 'smartparens-mode)
+  (add-hook 'clojure-mode-hook 'smart-backspace-mode)
+  (add-hook 'clojurescript-mode-hook 'smartparens-strict-mode)
+  (add-hook 'clojurescript-mode-hook 'smartparens-mode)
+  (add-hook 'clojurescript-mode-hook 'smart-backspace-mode)
+
   (setq org-agenda-files (list "~/org/notes.org"))
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "h" 'org-shiftleft)
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "l" 'org-shiftright)
@@ -340,6 +352,23 @@ you should place your code here."
    :keymaps '(slime-repl-mode-map)
    "<backspace>" 'evil-delete-backward-char-and-join
    )
+
+  (general-define-key
+   "C-x C-o" 'other-window)
+
+  (spacemacs/set-leader-keys "at" 'start-termite-terminal-current-dir)
+
+  (use-package evil-easymotion
+    :config
+    (evilem-default-keybindings "gs"))
+
+  (use-package dimmer
+    :config
+    (dimmer-configure-which-key)
+    (dimmer-configure-helm)
+    (dimmer-configure-org)
+    (dimmer-mode t))
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
