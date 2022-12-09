@@ -30,7 +30,7 @@
 ;;; Code:
 
 (defconst config-packages
-  '(general smartparens battle-haxe writeroom-mode haskell-mode)
+  '(general battle-haxe writeroom-mode)
   "The list of Lisp packages required by the config layer.
 
 Each entry is either:
@@ -104,27 +104,6 @@ Each entry is either:
 
   )
 
-(defun config/init-smartparens ()
-  (use-package smartparens
-    :diminish ""
-    :config
-    (general-define-key
-     "C-)" 'sp-forward-slurp-sexp
-     "C-(" 'sp-backward-slurp-sexp
-     "C-}" 'sp-forward-barf-sexp
-     "C-{" 'sp-backward-barf-sexp
-     "M-s" 'sp-splice-sexp
-     "M-(" 'sp-wrap-round
-     "M-{" 'sp-wrap-curly
-     "M-[" 'sp-wrap-square
-     "M-S" 'sp-split-sexp)
-    (smartparens-global-mode)
-    (sp-with-modes sp-lisp-modes
-      ;; disable ', it's the quote character!
-      (sp-local-pair "'" nil :actions nil)
-      (sp-local-pair "`" nil :actions nil)))
-    )
-
 (defun config/init-writeroom-mode ()
   (use-package writeroom-mode
     :config
@@ -154,11 +133,11 @@ Each entry is either:
     (battle-haxe-yasnippet-completion-expansion t "Keep this if you want yasnippet to expand completions when it's available.")
     (battle-haxe-immediate-completion nil "Toggle this if you want to immediately trigger completion when typing '.' and other relevant prefixes.")))
 
-(defun config/init-haskell-mode ()
-  (general-define-key
-   :keymaps 'haskell-mode-map
-   :states 'insert
-   "<backspace>" 'delete-backward-char))
+;; (defun config/init-haskell-mode ()
+;;   (general-define-key
+;;    :keymaps 'haskell-mode-map
+;;    :states 'insert
+;;    "<backspace>" 'delete-backward-char))
 
 ;; (defun config/init-smart-backspace-mode ()
 ;;   (use-package smart-backspace-mode

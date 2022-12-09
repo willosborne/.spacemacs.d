@@ -30,7 +30,8 @@ values."
    dotspacemacs-configuration-layer-path '("~/.spacemacs.d/")
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(javascript
+   '(
+     ruby
      sql
      racket
      (clojure :variables
@@ -41,7 +42,9 @@ values."
      haskell
      html
      helm
-     common-lisp
+     (common-lisp :variables
+                  slime-contribs '(slime-company slime-fancy slime-indentation slime-sbcl-exts slime-scratch
+                                                 slime-quicklisp))
      (c-c++ :variables
             c-basic-offset 4)
      cscope
@@ -62,6 +65,8 @@ values."
      syntax-checking
      config
      ;; version-control
+     scheme
+     (spacemacs-evil :variables spacemacs-evil-collection-allowed-list '(cider))
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -331,8 +336,8 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (spacemacs|do-after-display-system-init
-   (spacemacs-modeline/init-spaceline))
+  ;; (spacemacs|do-after-display-system-init
+  ;;  (spacemacs-modeline/init-spaceline))
 
   (add-hook 'cider-repl-mode-hook 'evil-emacs-state)
 
@@ -369,6 +374,26 @@ you should place your code here."
     (dimmer-configure-org)
     (dimmer-mode t))
 
+  (use-package smartparens
+    :diminish ""
+    :config
+    (general-define-key
+     "C-M-)" 'sp-forward-slurp-sexp
+     "C-M-(" 'sp-backward-slurp-sexp
+     "C-}" 'sp-forward-barf-sexp
+     "C-{" 'sp-backward-barf-sexp
+     "M-s" 'sp-splice-sexp
+     "M-(" 'sp-wrap-round
+     "M-{" 'sp-wrap-curly
+     "M-[" 'sp-wrap-square
+     "M-S" 'sp-split-sexp)
+    (smartparens-global-mode)
+    (sp-with-modes sp-lisp-modes
+      ;; disable ', it's the quote character!
+      (sp-local-pair "'" nil :actions nil)
+      (sp-local-pair "`" nil :actions nil)))
+
+  (set-face-attribute 'default nil :height 140)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -381,7 +406,7 @@ you should place your code here."
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mmm-mode markdown-toc magit-gitflow magit-popup htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flyspell-correct-helm flyspell-correct flycheck-rust flycheck-pos-tip flycheck evil-magit magit transient git-commit with-editor auto-dictionary toml-mode racer pos-tip cargo markdown-mode rust-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby geiser yapfify yaml-mode xterm-color writeroom-mode visual-fill-column web-mode web-beautify tagedit ssh-agency sql-indent slime-company slime slim-mode shell-pop scss-mode sass-mode racket-mode faceup pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements org-ref pdf-tools key-chord ivy tablist multi-term livid-mode skewer-mode simple-httpd live-py-mode json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc intero insert-shebang hy-mode hlint-refactor hindent helm-pydoc helm-hoogle helm-css-scss helm-cscope xcscope helm-company helm-c-yasnippet helm-bibtex bibtex-completion parsebib haskell-snippets haml-mode general fuzzy flycheck-haskell fish-mode evil-easymotion eshell-z eshell-prompt-extras esh-help emmet-mode disaster dimmer cython-mode company-web web-completion-data company-statistics company-shell company-ghci company-ghc ghc haskell-mode company-cabal company-c-headers company-auctex company-anaconda common-lisp-snippets coffee-mode cmm-mode cmake-mode clojure-snippets clj-refactor inflections multiple-cursors paredit clang-format cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a biblio biblio-core battle-haxe dash-functional company auto-yasnippet yasnippet auctex anaconda-mode pythonic ac-ispell auto-complete smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mmm-mode markdown-toc magit-gitflow magit-popup htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flyspell-correct-helm flyspell-correct flycheck-rust flycheck-pos-tip flycheck evil-magit magit transient git-commit with-editor auto-dictionary toml-mode racer pos-tip cargo markdown-mode rust-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
